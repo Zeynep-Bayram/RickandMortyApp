@@ -2,7 +2,7 @@
 
 
 
-\*\*Jetpack Compose\*\* ve \*\*Kotlin\*\* ile geliştirilmiş, Rick and Morty API üzerinden karakter verilerini listeleyen, arayan ve interaktif 3D flip kart animasyonuyla detaylandıran bir Android uygulaması.
+\*\*Jetpack Compose\*\* ve \*\*Kotlin\*\* ile geliştirilmiş, Rick and Morty API üzerinden karakter verilerini listeleyen, arayan ve interaktif 3D flip kart animasyonuyla karakter detaylarını gösteren bir Android uygulamasıdır.
 
 
 
@@ -12,15 +12,15 @@ Uygulama; REST API üzerinden asenkron veri çekme, MVVM mimarisi, state-driven 
 
 <p align="center">
 
-&#x20; <a href="#-özellikler">Özellikler</a> •
+&#x20; <a href="#özellikler">Özellikler</a> •
 
-&#x20; <a href="#-ekran-görüntüleri">Ekran Görüntüleri</a> •
+&#x20; <a href="#ekran-görüntüleri">Ekran Görüntüleri</a> •
 
-&#x20; <a href="#-kullanılan-teknolojiler">Teknolojiler</a> •
+&#x20; <a href="#kullanılan-teknolojiler">Teknolojiler</a> •
 
-&#x20; <a href="#-mimari">Mimari</a> •
+&#x20; <a href="#mimari">Mimari</a> •
 
-&#x20; <a href="#-projeyi-çalıştırma">Çalıştırma</a>
+&#x20; <a href="#projeyi-çalıştırma">Çalıştırma</a>
 
 </p>
 
@@ -34,39 +34,19 @@ Uygulama; REST API üzerinden asenkron veri çekme, MVVM mimarisi, state-driven 
 
 
 
-\-  \*\*Karakter Listeleme\*\* — Rick and Morty API üzerinden karakter verilerinin çekilip listelenmesi.
+\- \*\*Karakter Listeleme\*\* — Rick and Morty API üzerinden karakter verilerinin çekilip listelenmesi.
 
-\-  \*\*Karakter Arama\*\* — Girilen isme göre API üzerinden anlık arama yapılabilmesi.
+\- \*\*Karakter Arama\*\* — Girilen isme göre API üzerinden karakter araması yapılabilmesi.
 
-\-  \*\*3D Flip Kart Animasyonu\*\* — Karakter kartına dokunulduğunda kartın 180° dönerek arka yüzündeki detayları göstermesi.
+\- \*\*3D Flip Kart Animasyonu\*\* — Karakter kartına dokunulduğunda kartın 180° dönerek arka yüzündeki detayları göstermesi.
 
-\-  \*\*Detaylı Karakter Bilgisi\*\* — Durum (status), tür (species), cinsiyet, köken ve mevcut konum bilgilerinin görüntülenmesi.
+\- \*\*Detaylı Karakter Bilgisi\*\* — Durum (status), tür (species), cinsiyet, köken ve mevcut konum bilgilerinin görüntülenmesi.
 
-\-  \*\*State Yönetimi\*\* — Loading, Success ve Error durumlarının ayrı ayrı ve tutarlı biçimde yönetilmesi.
+\- \*\*State Yönetimi\*\* — Loading, Success ve Error durumlarının ayrı ayrı ve tutarlı biçimde yönetilmesi.
 
-\-  \*\*Hata Yönetimi ve Tekrar Deneme\*\* — Ağ/API hatasında kullanıcıya açık mesaj ve "Tekrar Dene" seçeneği sunulması.
+\- \*\*Hata Yönetimi ve Tekrar Deneme\*\* — Ağ veya API hatasında kullanıcıya hata mesajı gösterilmesi ve "Tekrar Dene" seçeneği sunulması.
 
-\-  \*\*Uzaktan Görsel Yükleme\*\* — Karakter görsellerinin Coil ile API üzerinden verimli biçimde yüklenmesi.
-
-
-
-\---
-
-
-
-\##  Ekran Görüntüleri
-
-
-
-> Aşağıdaki görselleri projenizin kök dizininde bir `screenshots/` klasörü oluşturarak ekleyin ve dosya adlarını kendi görüntülerinizle eşleştirin.
-
-
-
-| Ana Ekran | Karakter Arama | Kart Detayı (Flip) |
-
-|:---:|:---:|:---:|
-
-| !\[Ana Ekran](screenshots/home.png) | !\[Arama](screenshots/search.png) | !\[Detay](screenshots/flip.png) |
+\- \*\*Uzaktan Görsel Yükleme\*\* — Karakter görsellerinin Coil ile API üzerinden yüklenmesi.
 
 
 
@@ -74,7 +54,67 @@ Uygulama; REST API üzerinden asenkron veri çekme, MVVM mimarisi, state-driven 
 
 
 
-\##  Kullanılan Teknolojiler
+\## Ekran Görüntüleri
+
+
+
+Uygulamanın farklı kullanım senaryolarına ait ekran görüntüleri aşağıda yer almaktadır.
+
+
+
+\### Ana Ekran
+
+
+
+Karakterlerin API üzerinden çekilerek listelendiği ana ekran.
+
+
+
+!\[Ana Ekran](screenshots/homepage.png)
+
+
+
+\### Karakter Arama
+
+
+
+Kullanıcının karakter adına göre arama yapabildiği ekran.
+
+
+
+!\[Karakter Arama](screenshots/search.png)
+
+
+
+\### Arama Sonuçları
+
+
+
+Girilen arama sorgusuna göre API'den dönen karakterlerin listelendiği ekran.
+
+
+
+!\[Arama Sonuçları](screenshots/searchresult.png)
+
+
+
+\### Kart Detayı
+
+
+
+Karakter kartına dokunulduğunda gerçekleşen 3D flip animasyonu sonrasında karakterin detay bilgilerinin gösterildiği ekran.
+
+
+
+!\[Kart Detayı](screenshots/details.png)
+
+
+
+\---
+
+
+
+\## Kullanılan Teknolojiler
 
 
 
@@ -86,19 +126,23 @@ Uygulama; REST API üzerinden asenkron veri çekme, MVVM mimarisi, state-driven 
 
 | UI | \*\*Jetpack Compose\*\* | Deklaratif ve modern Android UI araç seti |
 
-| UI Bileşenleri | \*\*Material 3\*\* | Tasarım sistemi ve hazır bileşenler |
+| UI Bileşenleri | \*\*Material 3\*\* | Tasarım sistemi ve hazır UI bileşenleri |
 
-| Asenkronluk | \*\*Kotlin Coroutines\*\* | Non-blocking, asenkron API çağrıları |
+| Asenkronluk | \*\*Kotlin Coroutines\*\* | Asenkron ve non-blocking API çağrıları |
 
 | Ağ Katmanı | \*\*Retrofit\*\* | Tip güvenli (type-safe) HTTP istemcisi |
 
-| Serileştirme | \*\*Gson\*\* | JSON ↔ Kotlin model dönüşümü |
+| Serileştirme | \*\*Gson\*\* | JSON verilerinin Kotlin modellerine dönüştürülmesi |
 
-| Görsel Yükleme | \*\*Coil\*\* | Compose ile uyumlu, coroutine tabanlı görsel yükleme kütüphanesi |
+| Görsel Yükleme | \*\*Coil\*\* | Compose ile uyumlu uzaktan görsel yükleme kütüphanesi |
 
-| State Yönetimi | \*\*ViewModel\*\* | Konfigürasyon değişikliklerine dayanıklı UI state yönetimi |
+| State Yönetimi | \*\*ViewModel\*\* | UI state ve verilerin yönetilmesi |
 
-| Mimari | \*\*MVVM\*\* | Model-View-ViewModel katmanlı mimari |
+| Listeleme | \*\*LazyColumn\*\* | Performanslı listeleme |
+
+| Animasyon | \*\*Compose Animation\*\* | 3D kart flip animasyonu |
+
+| Mimari | \*\*MVVM\*\* | Model-View-ViewModel mimari deseni |
 
 
 
@@ -106,11 +150,79 @@ Uygulama; REST API üzerinden asenkron veri çekme, MVVM mimarisi, state-driven 
 
 
 
-\##  Mimari
+\## Kullanılan API
 
 
 
-Proje \*\*MVVM (Model-View-ViewModel)\*\* mimari desenini takip eder. Bu yapı; sorumlulukların katmanlar arasında net biçimde ayrılmasını, test edilebilirliği ve sürdürülebilirliği sağlar.
+Uygulamada açık kaynaklı \*\*Rick and Morty API\*\* kullanılmaktadır.
+
+
+
+\### Base URL
+
+
+
+```text
+
+https://rickandmortyapi.com/api/
+
+```
+
+
+
+\### Endpoint
+
+
+
+```text
+
+GET /character
+
+```
+
+
+
+API üzerinden alınan karakter verileri Retrofit kullanılarak uygulamaya aktarılır ve Gson ile Kotlin modellerine dönüştürülür.
+
+
+
+Uygulamada kullanılan temel karakter alanları:
+
+
+
+\- `id`
+
+\- `name`
+
+\- `status`
+
+\- `species`
+
+\- `gender`
+
+\- `type`
+
+\- `origin`
+
+\- `location`
+
+\- `image`
+
+
+
+\---
+
+
+
+\## Mimari
+
+
+
+Proje \*\*MVVM (Model-View-ViewModel)\*\* mimari desenini takip eder.
+
+
+
+Bu yapı; API işlemleri, veri modelleri, UI state'leri ve kullanıcı arayüzü sorumluluklarının birbirinden ayrılmasını sağlayarak daha düzenli, test edilebilir ve sürdürülebilir bir yapı oluşturur.
 
 
 
@@ -118,7 +230,7 @@ Proje \*\*MVVM (Model-View-ViewModel)\*\* mimari desenini takip eder. Bu yapı; 
 
 
 
-```
+```text
 
 Rick and Morty API
 
@@ -140,7 +252,11 @@ Rick and Morty API
 
 &#x20;       ↓
 
-&#x20;CharacterListScreen (Jetpack Compose)
+&#x20;CharacterListScreen
+
+&#x20;       ↓
+
+&#x20;  Jetpack Compose
 
 ```
 
@@ -150,81 +266,67 @@ Rick and Morty API
 
 
 
-\*\*Model\*\*
+\#### Model
+
+
 
 API'den gelen verileri temsil eden veri sınıflarını içerir.
 
-\- `Character` — Tekil karakter modeli
-
-\- `CharacterResponse` — API'den dönen liste/response modeli
-
-\- `CharacterApi` — Retrofit servis arayüzü
 
 
+\- `Character` — Tekil karakter modelini temsil eder.
 
-\*\*ViewModel\*\*
-
-`CharacterViewModel`, API'den veri çekme işlemini coroutine'ler üzerinden asenkron olarak yürütür ve sonucu `CharacterUiState` (Loading / Success / Error) üzerinden View katmanına iletir. Arama sorgularının yönetimi de bu katmanda gerçekleşir.
+\- `CharacterResponse` — API'den dönen karakter listesini temsil eder.
 
 
 
-\*\*View\*\*
-
-Jetpack Compose ile oluşturulan `CharacterListScreen`, ViewModel'deki state'i gözlemler ve buna göre:
-
-\- Loading durumunda `CircularProgressIndicator` gösterir,
-
-\- Success durumunda karakterleri `LazyColumn` içinde listeler,
-
-\- Error durumunda hata mesajı ve tekrar deneme butonu sunar.
+\#### API
 
 
 
-Kart etkileşimleri ve flip animasyonu da bu katmanda yönetilir.
+Retrofit kullanılarak API iletişimi gerçekleştirilir.
 
 
 
-\###  Karakter Arama
+\- `CharacterApi` — API endpoint'lerinin tanımlandığı Retrofit interface'idir.
+
+\- `RetrofitInstance` — Retrofit istemcisinin oluşturulduğu yapıdır.
 
 
 
-Arama işlemi istemci tarafında filtreleme yerine doğrudan API üzerinden gerçekleştirilir. Kullanıcının girdiği metin `@Query("name")` parametresiyle isteğe eklenir ve dönen sonuç yeniden `CharacterUiState` üzerinden ekrana yansıtılır.
+\#### ViewModel
 
 
 
-\###  3D Kart Animasyonu
+`CharacterViewModel`, API'den veri çekme işlemini Kotlin Coroutines kullanarak asenkron şekilde yürütür.
 
 
 
-Karakter kartına dokunulduğunda, kartın arka yüzündeki detay bilgilerini göstermek amacıyla 3D flip animasyonu uygulanmıştır.
+API sonucuna göre `CharacterUiState` güncellenir ve UI'ın hangi durumda olması gerektiği belirlenir.
 
 
 
-```
-
-0° ──────────────────→ 180°
-
-Ön Yüz (Görsel/İsim)     Arka Yüz (Detaylar)
-
-```
+Arama sorgularının yönetimi de ViewModel içerisinde gerçekleştirilir.
 
 
 
-Animasyon `animateFloatAsState` ve `graphicsLayer` (`rotationY`, `cameraDistance`) kullanılarak oluşturulmuştur. Kartın arka yüzünde şu bilgiler yer alır:
+\#### View
 
 
 
-\- Status (Durum)
+Jetpack Compose ile oluşturulan `CharacterListScreen`, ViewModel tarafından sağlanan state'i gözlemler ve mevcut duruma göre uygun kullanıcı arayüzünü oluşturur.
 
-\- Species (Tür)
 
-\- Gender (Cinsiyet)
 
-\- Type (Alt Tür)
+\- Loading durumunda `CircularProgressIndicator` gösterilir.
 
-\- Origin (Köken)
+\- Success durumunda karakterler `LazyColumn` içerisinde listelenir.
 
-\- Location (Konum)
+\- Error durumunda hata mesajı ve tekrar deneme butonu gösterilir.
+
+
+
+Kart etkileşimleri ve 3D flip animasyonu da View katmanında yönetilir.
 
 
 
@@ -232,7 +334,185 @@ Animasyon `animateFloatAsState` ve `graphicsLayer` (`rotationY`, `cameraDistance
 
 
 
-\##  Öne Çıkan Teknik Konular
+\## UI State Yönetimi
+
+
+
+Uygulamadaki farklı UI durumlarını temsil etmek için `CharacterUiState` sealed interface yapısı kullanılmıştır.
+
+
+
+```kotlin
+
+sealed interface CharacterUiState {
+
+&#x20;   object Loading : CharacterUiState
+
+
+
+&#x20;   data class Success(
+
+&#x20;       val characters: List<Character>
+
+&#x20;   ) : CharacterUiState
+
+
+
+&#x20;   data class Error(
+
+&#x20;       val message: String
+
+&#x20;   ) : CharacterUiState
+
+}
+
+```
+
+
+
+Bu yapı sayesinde UI, uygulamanın mevcut state'ine göre şekillenir.
+
+
+
+```text
+
+&#x20;       Loading
+
+&#x20;          ↓
+
+&#x20;      API Request
+
+&#x20;          ↓
+
+&#x20;    ┌─────┴─────┐
+
+&#x20;    ↓           ↓
+
+&#x20; Success       Error
+
+&#x20;    ↓           ↓
+
+&#x20; Listeleme   Hata Mesajı
+
+&#x20;                 ↓
+
+&#x20;            Tekrar Dene
+
+```
+
+
+
+Bu yaklaşım, UI'ın doğrudan mevcut uygulama state'ine bağlı olarak oluşturulmasını sağlar.
+
+
+
+\---
+
+
+
+\## Karakter Arama
+
+
+
+Arama işlemi istemci tarafında mevcut listenin filtrelenmesi yerine doğrudan API üzerinden gerçekleştirilir.
+
+
+
+Kullanıcının girdiği arama metni Retrofit içerisindeki `@Query("name")` parametresiyle API isteğine eklenir.
+
+
+
+Örneğin:
+
+
+
+```text
+
+Rick
+
+```
+
+
+
+arama sorgusu API'ye karakter adı parametresi olarak gönderilir.
+
+
+
+API'den dönen sonuç tekrar `CharacterUiState` üzerinden UI'a aktarılır ve ekranda listelenir.
+
+
+
+\---
+
+
+
+\## 3D Kart Animasyonu
+
+
+
+Karakter kartına dokunulduğunda kartın ön yüzünden arka yüzüne geçiş yapılır.
+
+
+
+Kartın ön yüzünde:
+
+
+
+\- Karakter görseli
+
+\- Karakter adı
+
+
+
+yer alırken, arka yüzünde:
+
+
+
+\- Status
+
+\- Species
+
+\- Gender
+
+\- Type
+
+\- Origin
+
+\- Location
+
+
+
+bilgileri gösterilir.
+
+
+
+Animasyon Jetpack Compose içerisindeki `animateFloatAsState` ve `graphicsLayer` kullanılarak oluşturulmuştur.
+
+
+
+`rotationY` değeri kartın yatay eksende dönüşünü sağlarken, `cameraDistance` 3D perspektif görünümünü oluşturmak için kullanılır.
+
+
+
+```text
+
+0° ──────────────────→ 180°
+
+
+
+Ön Yüz                    Arka Yüz
+
+Görsel / İsim              Detaylar
+
+```
+
+
+
+\---
+
+
+
+\## Öne Çıkan Teknik Konular
 
 
 
@@ -242,11 +522,17 @@ Bu projede özellikle aşağıdaki konseptler üzerinde çalışılmıştır:
 
 \- REST API entegrasyonu ve veri alışverişi
 
+\- Retrofit ile API isteklerinin gerçekleştirilmesi
+
 \- Kotlin Coroutines ile asenkron ağ işlemleri
+
+\- `viewModelScope` kullanımı
 
 \- MVVM mimarisi ve katmanlar arası veri akışı
 
-\- State-driven UI tasarımı
+\- Sealed Interface ile UI state yönetimi
+
+\- State-driven UI yaklaşımı
 
 \- Jetpack Compose ve recomposition mekanizması
 
@@ -256,9 +542,17 @@ Bu projede özellikle aşağıdaki konseptler üzerinde çalışılmıştır:
 
 \- `LazyColumn` ile performanslı listeleme
 
-\- Coil ile uzaktan görsel (remote image) yükleme
+\- Coil ile uzaktan görsel yükleme
 
-\- Compose animasyonları ve `graphicsLayer` ile 3D dönüşümler
+\- Compose Animation
+
+\- `animateFloatAsState` kullanımı
+
+\- `graphicsLayer` ile 3D dönüşümler
+
+\- `rotationY` ve `cameraDistance` kullanımı
+
+\- API ve ağ hatalarının yönetimi
 
 
 
@@ -270,7 +564,7 @@ Bu projede özellikle aşağıdaki konseptler üzerinde çalışılmıştır:
 
 
 
-```
+```text
 
 com.example.rickandmortyapp
 
@@ -294,7 +588,15 @@ com.example.rickandmortyapp
 
 ├── ui
 
-│   └── CharacterListScreen.kt
+│   ├── CharacterListScreen.kt
+
+│   └── theme
+
+│       ├── Color.kt
+
+│       ├── Theme.kt
+
+│       └── Type.kt
 
 │
 
@@ -314,7 +616,7 @@ com.example.rickandmortyapp
 
 
 
-\##  Projeyi Çalıştırma
+\## Projeyi Çalıştırma
 
 
 
@@ -338,15 +640,23 @@ com.example.rickandmortyapp
 
 1\. Repository'yi klonlayın:
 
-&#x20;  ```sh
 
-&#x20;  git clone https://github.com/Zeynep-Bayram/RickAndMortyApp.git
 
-&#x20;  ```
+```bash
+
+git clone https://github.com/Zeynep-Bayram/RickAndMortyApp.git
+
+```
+
+
 
 2\. Projeyi Android Studio ile açın.
 
+
+
 3\. Gradle senkronizasyonunun tamamlanmasını bekleyin.
+
+
 
 4\. Uygulamayı bir emülatör veya fiziksel Android cihaz üzerinde çalıştırın.
 
@@ -360,5 +670,25 @@ com.example.rickandmortyapp
 
 
 
-<p align="center">Made with ❤️ for the Android Community</p>
+\## Repository
+
+
+
+Projenin kaynak koduna GitHub repository üzerinden ulaşabilirsiniz:
+
+
+
+https://github.com/Zeynep-Bayram/RickAndMortyApp
+
+
+
+\---
+
+
+
+<p align="center">
+
+&#x20; Geliştirme sürecinde modern Android geliştirme yaklaşımları kullanılarak hazırlanmıştır.
+
+</p>
 
