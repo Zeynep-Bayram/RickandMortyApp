@@ -101,3 +101,192 @@ Rick and Morty API
         ↓
  CharacterListScreen
    (Jetpack Compose)
+
+### Katmanlar
+
+#### Model
+
+API'den gelen verileri temsil eden veri sınıflarını ve API servis tanımını içerir.
+
+- `Character` — Tekil karakter modeli
+- `CharacterResponse` — API'den dönen response modeli
+- `CharacterApi` — Retrofit servis arayüzü
+
+#### ViewModel
+
+`CharacterViewModel`, API'den veri çekme işlemlerini Kotlin Coroutines üzerinden asenkron olarak yürütür.
+
+API'den gelen sonuçlar `CharacterUiState` üzerinden UI katmanına aktarılır.
+
+Ayrıca karakter arama sorgularının yönetimi de ViewModel içerisinde gerçekleştirilir.
+
+#### View
+
+Jetpack Compose ile oluşturulan `CharacterListScreen`, ViewModel tarafından sağlanan state'i gözlemler ve mevcut state'e göre arayüzü oluşturur.
+
+- Loading durumunda `CircularProgressIndicator` gösterilir.
+- Success durumunda karakterler `LazyColumn` içerisinde listelenir.
+- Error durumunda hata mesajı ve tekrar deneme seçeneği gösterilir.
+
+Kart etkileşimleri ve 3D flip animasyonu da UI katmanında yönetilir.
+
+---
+
+## UI State Yönetimi
+
+Uygulamada UI'ın mevcut duruma göre şekillenmesini sağlayan state-driven bir yaklaşım kullanılmıştır.
+
+```text
+        Loading
+           ↓
+    ┌──────┴──────┐
+    ↓             ↓
+ Success         Error
+                  ↓
+             Tekrar Dene
+
+## Karakter Arama
+
+Karakter araması, istemci tarafında mevcut listeyi filtrelemek yerine doğrudan Rick and Morty API üzerinden gerçekleştirilir.
+
+Kullanıcının girdiği arama değeri Retrofit içerisindeki `@Query("name")` parametresi aracılığıyla API isteğine eklenir.
+
+API'den dönen sonuç ViewModel tarafından işlenerek `CharacterUiState` üzerinden ekrana aktarılır.
+
+---
+
+## 3D Kart Animasyonu
+
+Karakter kartına dokunulduğunda kart 180° döndürülerek arka yüzündeki detay bilgileri gösterilir.
+
+```text
+0° ─────────────────────→ 180°
+
+Ön Yüz                    Arka Yüz
+Görsel + İsim             Karakter Detayları
+
+Animasyon Jetpack Compose içerisinde aşağıdaki yapılar kullanılarak oluşturulmuştur:
+
+- `animateFloatAsState`
+- `graphicsLayer`
+- `rotationY`
+- `cameraDistance`
+
+Kartın arka yüzünde aşağıdaki bilgiler gösterilir:
+
+- Status
+- Species
+- Gender
+- Type
+- Origin
+- Location
+
+---
+
+## Öne Çıkan Teknik Konular
+
+Bu projede özellikle aşağıdaki Android geliştirme konuları üzerinde çalışılmıştır:
+
+- REST API entegrasyonu ve veri alışverişi
+- Retrofit ile HTTP istekleri
+- Gson ile JSON veri dönüşümü
+- Kotlin Coroutines ile asenkron işlemler
+- MVVM mimarisi
+- ViewModel ile state yönetimi
+- State-driven UI tasarımı
+- Jetpack Compose ve recomposition
+- `remember` / `rememberSaveable` ile state saklama
+- `LaunchedEffect` ile side-effect yönetimi
+- `LazyColumn` ile listeleme
+- Coil ile uzaktan görsel yükleme
+- Jetpack Compose animasyonları
+- `graphicsLayer` ile 3D dönüşümler
+- Loading / Success / Error state yönetimi
+- API üzerinden karakter arama
+
+---
+
+## Proje Yapısı
+
+```text
+com.example.rickandmortyapp
+│
+├── api
+│   ├── CharacterApi.kt
+│   └── RetrofitInstance.kt
+│
+├── model
+│   ├── Character.kt
+│   └── CharacterResponse.kt
+│
+├── ui
+│   ├── CharacterListScreen.kt
+│   └── theme
+│       ├── Color.kt
+│       ├── Theme.kt
+│       └── Type.kt
+│
+├── viewmodel
+│   └── CharacterViewModel.kt
+│
+└── MainActivity.kt
+
+
+## API
+
+Uygulamada karakter verilerini almak için **Rick and Morty API** kullanılmaktadır.
+
+API üzerinden karakterlerin aşağıdaki bilgileri alınarak uygulama içerisinde gösterilir:
+
+- İsmi
+- Görseli
+- Durumu
+- Türü
+- Cinsiyeti
+- Kökeni
+- Konumu
+
+---
+
+## Projeyi Çalıştırma
+
+### Gereksinimler
+
+- Android Studio
+- JDK 11 veya üzeri
+- Android SDK
+- İnternet bağlantısı
+
+### Kurulum
+
+1. Repository'yi klonlayın:
+
+   ```bash
+   git clone https://github.com/Zeynep-Bayram/RickAndMortyApp.git
+   ```
+
+2. Projeyi Android Studio ile açın.
+
+3. Gradle senkronizasyonunun tamamlanmasını bekleyin.
+
+4. Bir Android emülatörü veya fiziksel Android cihaz bağlayın.
+
+5. Uygulamayı çalıştırın.
+
+> Uygulamanın karakter verilerini API üzerinden alabilmesi için cihazın internet bağlantısının olması gerekir.
+
+---
+
+## Geliştirme Amacı
+
+Bu proje, modern Android geliştirme yaklaşımını pratikte deneyimlemek amacıyla geliştirilmiştir.
+
+Özellikle **Jetpack Compose, MVVM, Retrofit, Kotlin Coroutines, ViewModel, UI state yönetimi ve Compose animasyonları** üzerine odaklanılmıştır.
+
+Proje geliştirilirken yalnızca çalışan bir arayüz oluşturmak yerine, veri akışının ve UI state'lerinin nasıl yönetildiği de ele alınmıştır.
+
+---
+
+<p align="center">
+  Android geliştirme çalışması olarak geliştirilmiştir.
+</p>
