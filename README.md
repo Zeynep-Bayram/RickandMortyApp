@@ -11,6 +11,7 @@ Uygulama; REST API üzerinden asenkron veri çekme, MVVM mimarisi, state-driven 
   <a href="#mimari">Mimari</a> •
   <a href="#öne-çıkan-teknik-konular">Teknik Konular</a> •
   <a href="#proje-yapısı">Proje Yapısı</a> •
+  <a href="#api">API</a> •
   <a href="#projeyi-çalıştırma">Çalıştırma</a>
 </p>
 
@@ -101,6 +102,7 @@ Rick and Morty API
         ↓
  CharacterListScreen
    (Jetpack Compose)
+```
 
 ### Katmanlar
 
@@ -144,6 +146,9 @@ Uygulamada UI'ın mevcut duruma göre şekillenmesini sağlayan state-driven bir
  Success         Error
                   ↓
              Tekrar Dene
+```
+
+---
 
 ## Karakter Arama
 
@@ -164,6 +169,7 @@ Karakter kartına dokunulduğunda kart 180° döndürülerek arka yüzündeki de
 
 Ön Yüz                    Arka Yüz
 Görsel + İsim             Karakter Detayları
+```
 
 Animasyon Jetpack Compose içerisinde aşağıdaki yapılar kullanılarak oluşturulmuştur:
 
@@ -230,7 +236,9 @@ com.example.rickandmortyapp
 │   └── CharacterViewModel.kt
 │
 └── MainActivity.kt
+```
 
+---
 
 ## API
 
@@ -261,9 +269,9 @@ API üzerinden karakterlerin aşağıdaki bilgileri alınarak uygulama içerisin
 
 1. Repository'yi klonlayın:
 
-   ```bash
-   git clone https://github.com/Zeynep-Bayram/RickAndMortyApp.git
-   ```
+```bash
+git clone https://github.com/Zeynep-Bayram/RickAndMortyApp.git
+```
 
 2. Projeyi Android Studio ile açın.
 
@@ -286,7 +294,3 @@ Bu proje, modern Android geliştirme yaklaşımını pratikte deneyimlemek amac�
 Proje geliştirilirken yalnızca çalışan bir arayüz oluşturmak yerine, veri akışının ve UI state'lerinin nasıl yönetildiği de ele alınmıştır.
 
 ---
-
-<p align="center">
-  Android geliştirme çalışması olarak geliştirilmiştir.
-</p>
