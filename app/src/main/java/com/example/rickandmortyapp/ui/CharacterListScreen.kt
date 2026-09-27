@@ -1,5 +1,6 @@
 package com.example.rickandmortyapp.ui
 
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -24,13 +25,16 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -38,6 +42,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -70,7 +76,9 @@ fun CharacterListScreen(
     viewModel: CharacterViewModel = viewModel()
 ) {
     val uiState = viewModel.uiState.value
-    var searchText by rememberSaveable { mutableStateOf("") }
+    val favoriteIds by viewModel.favoriteIds.collectAsState()
+    val favoriteError by viewModel.favoriteError.collectAsState()
+    val searchText by viewModel.searchText.collectAsState()
     val listState = rememberLazyListState()
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -102,14 +110,7 @@ fun CharacterListScreen(
                 .padding(horizontal = 16.dp)
                 .height(56.dp),
             value = searchText,
-            onValueChange = {
-                searchText = it
-                viewModel.onSearchTextChange(it)
-
-                if(it.length > 2 || it.isEmpty()) {
-                    viewModel.fetchCharacters(it)
-                }
-            },
+            onValueChange = viewModel::onSearchTextChange,
             placeholder = {
                 Text(
                     text = "Search the multiverse...",
@@ -139,6 +140,15 @@ fun CharacterListScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        favoriteError?.let { message ->
+            Text(
+                text = message,
+                color = Color(0xFFFF8A80),
+                fontSize = 13.sp,
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)
+            )
+        }
+
         when (uiState) {
             is CharacterUiState.Empty -> Box(
                 modifier = Modifier.fillMaxSize(),
@@ -148,18 +158,17 @@ fun CharacterListScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.offset(y = (-85).dp)
                 ) {
-                    Text("Karakter bulunamadı", color = Color.White)
+                    Text("No characters found", color = Color.White)
                     Spacer(modifier = Modifier.height(8.dp))
                     Button(
                         onClick = {
                             focusManager.clearFocus(force = true)
                             keyboardController?.hide()
-                            searchText = ""
-                            viewModel.fetchCharacters()
+                            viewModel.resetSearch()
                         },
                         colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = portalGreen)
                     ) {
-                        Text("Ana sayfaya dön", color = Color.White)
+                        Text("Back to search", color = Color.White)
                     }
                 }
             }
@@ -185,7 +194,7 @@ fun CharacterListScreen(
                         },
                         colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = portalGreen)
                     ) {
-                        Text("Tekrar dene", color = Color.White)
+                        Text("Try again", color = Color.White)
                     }
                 }
             }
@@ -231,25 +240,32 @@ fun CharacterListScreen(
                         items = uiState.characters,
                         key = { character -> character.id }
                     ) { character ->
-
-                        var isFlipped by remember { mutableStateOf(false) }
-                        val rotation by animateFloatAsState(
+                        val isFavorite = character.id in favoriteIds
+                        var isFlipped by rememberSaveable(character.id) { mutableStateOf(false) }
+                        val rotation = animateFloatAsState(
                             targetValue = if (isFlipped) 180f else 0f,
-                            animationSpec = tween(600),
+                            animationSpec = tween(
+                                durationMillis = 450,
+                                easing = FastOutSlowInEasing
+                            ),
                             label = "cardFlip"
                         )
+                        val showBack by remember(rotation) {
+                            derivedStateOf { rotation.value >= 90f }
+                        }
 
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(250.dp)
                                 .padding(horizontal = 16.dp, vertical = 8.dp)
+                                .graphicsLayer {
+                                    // Switch faces edge-on and keep the visible face readable.
+                                    rotationY = if (showBack) rotation.value - 180f else rotation.value
+                                    cameraDistance = size.width * 4f
+                                }
                                 .clickable {
                                     isFlipped = !isFlipped
-                                }
-                                .graphicsLayer {
-                                    rotationY = rotation
-                                    cameraDistance = 8 * density
                                 },
                             colors = CardDefaults.cardColors(
                                 containerColor = cardBackgroundColor
@@ -259,70 +275,76 @@ fun CharacterListScreen(
                             )
                         ) {
                             Box(modifier = Modifier.fillMaxSize()) {
-                                if (isFlipped) {
-
-                                    Column(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .graphicsLayer {
-                                                rotationY = 180f
-                                            }
-                                            .padding(24.dp),
-                                        horizontalAlignment = Alignment.Start,
-                                        verticalArrangement = Arrangement.Center
+                                if (showBack) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize()
                                     ) {
-
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            modifier = Modifier.fillMaxWidth()
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 24.dp),
+                                            horizontalAlignment = Alignment.Start,
+                                            verticalArrangement = Arrangement.Center
                                         ) {
-                                            AsyncImage(
-                                                model = character.image,
-                                                contentDescription = "${character.name} thumbnail",
-                                                modifier = Modifier
-                                                    .size(80.dp)
-                                                    .clip(CircleShape)
-                                                    .border(2.dp, Color.Black, CircleShape),
-                                                contentScale = ContentScale.Crop
-                                            )
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) {
+                                                AsyncImage(
+                                                    model = character.image,
+                                                    contentDescription = "${character.name} thumbnail",
+                                                    modifier = Modifier
+                                                        .size(80.dp)
+                                                        .clip(CircleShape)
+                                                        .border(2.dp, Color.Black, CircleShape),
+                                                    contentScale = ContentScale.Crop
+                                                )
 
-                                            Spacer(modifier = Modifier.width(16.dp))
+                                                Spacer(modifier = Modifier.width(16.dp))
 
-                                            Text(
-                                                text = "ID DETAILS",
-                                                fontSize = 24.sp,
-                                                fontWeight = FontWeight.ExtraBold,
-                                                color = Color.Black
-                                            )
+                                                Text(
+                                                    text = "ID DETAILS",
+                                                    fontSize = 24.sp,
+                                                    fontWeight = FontWeight.ExtraBold,
+                                                    color = Color.Black
+                                                )
+                                            }
+
+                                            Spacer(modifier = Modifier.height(24.dp))
+
+                                            CompositionLocalProvider(
+                                                LocalTextStyle provides LocalTextStyle.current.copy(
+                                                    fontSize = 18.sp,
+                                                    color = Color.DarkGray
+                                                )
+                                            ) {
+                                                Text("Type: ${character.type.ifEmpty { "Unknown" }}")
+                                                Spacer(modifier = Modifier.height(8.dp))
+                                                Text("Origin: ${character.origin.name}")
+                                                Spacer(modifier = Modifier.height(8.dp))
+                                                Text("Location: ${character.location.name}")
+                                            }
                                         }
 
-                                        Spacer(modifier = Modifier.height(24.dp))
-
-                                        CompositionLocalProvider(
-                                            LocalTextStyle provides LocalTextStyle.current.copy(
-                                                fontSize = 18.sp,
-                                                color = Color.DarkGray
-                                            )
-                                        ) {
-                                            Text("Type: ${character.type.ifEmpty { "Unknown" }}")
-                                            Spacer(modifier = Modifier.height(8.dp))
-                                            Text("Origin: ${character.origin.name}")
-                                            Spacer(modifier = Modifier.height(8.dp))
-                                            Text("Location: ${character.location.name}")
-                                        }
+                                        FavoriteHeartButton(
+                                            isFavorite = isFavorite,
+                                            onClick = { viewModel.toggleFavorite(character) },
+                                            modifier = Modifier.align(Alignment.TopEnd)
+                                        )
                                     }
                                 } else {
-
                                     Column(
                                         modifier = Modifier
                                             .fillMaxSize()
-                                            .padding(12.dp)
+                                            .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
                                     ) {
                                         Text(
                                             text = "Portal License",
                                             fontSize = 28.sp,
                                             color = portalGreen,
-                                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                                            modifier = Modifier
+                                                .align(Alignment.CenterHorizontally)
+                                                .padding(end = 36.dp),
                                             fontFamily = getSchwiftyFont
                                         )
 
@@ -377,6 +399,35 @@ fun CharacterListScreen(
                                             }
                                         }
                                     }
+
+                                    FavoriteHeartButton(
+                                        isFavorite = isFavorite,
+                                        onClick = { viewModel.toggleFavorite(character) },
+                                        modifier = Modifier.align(Alignment.TopEnd)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    if (uiState.isLoadingNextPage) {
+                        item(key = "loadingNextPage") {
+                            Box(
+                                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(color = portalGreen)
+                            }
+                        }
+                    }
+                    uiState.nextPageError?.let { message ->
+                        item(key = "nextPageError") {
+                            Column(
+                                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(message, color = Color.White, textAlign = TextAlign.Center)
+                                Button(onClick = viewModel::retry) {
+                                    Text("Try again")
                                 }
                             }
                         }
@@ -384,5 +435,37 @@ fun CharacterListScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun FavoriteHeartButton(
+    isFavorite: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val showSnackbar = rememberShowSnackbar()
+    IconButton(
+        onClick = {
+            onClick()
+            showSnackbar(
+                if (isFavorite) "Removed from favorites" else "Added to favorites"
+            )
+        },
+        modifier = modifier.padding(4.dp)
+    ) {
+        Icon(
+            imageVector = if (isFavorite) {
+                Icons.Filled.Favorite
+            } else {
+                Icons.Outlined.FavoriteBorder
+            },
+            contentDescription = if (isFavorite) {
+                "Remove from favorites"
+            } else {
+                "Add to favorites"
+            },
+            tint = if (isFavorite) Color(0xFFE53935) else Color.Black
+        )
     }
 }
